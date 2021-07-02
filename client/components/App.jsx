@@ -57,10 +57,7 @@ const App = () => {
   return (
     <>
       <div className='biggestBox'>
-        <div className='titleContainer'>
-          <img src={memes[0].url} alt='title' className='title'/>
-          <p className='description'>Swipe left if cringe, swipe right if based</p>
-        </div>
+        <div><img src={memes[0].url} alt='title' className='title'/></div>
         <div className='cardContainer'>
           {db.map((meme, index) =>
             <TinderCard ref={childRefs[index]} className='swipe' key={meme.id} onSwipe={(direction) => swiped(direction, meme.id)} onCardLeftScreen={() => outOfFrame(meme.id)} >
@@ -70,11 +67,11 @@ const App = () => {
         </div>
         {direction ? <h2 className='infotext'>This meme is {choice}</h2> : <h2>Start swiping!</h2> }
       </div>
-      <div>
-        <button onClick={() => swipe('left')}><AiOutlineDislike /></button>
-        <button onClick={() => swipe('down')}><FaRegAngry /></button>
-        <button onClick={() => swipe('up')}><BiHappyHeartEyes /></button>
-        <button onClick={() => swipe('right')}><AiOutlineLike /></button>
+      <div className='daButtons'>
+        <button onClick={() => swipe('left')}><AiOutlineDislike className='thumbDown' /></button>
+        <button onClick={() => swipe('down')}><FaRegAngry className='illegal'/></button>
+        <button onClick={() => swipe('up')}><BiHappyHeartEyes className='superBased'/></button>
+        <button onClick={() => swipe('right')}><AiOutlineLike className='thumbUp'/></button>
       </div>
 
     </>
