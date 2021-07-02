@@ -1,19 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import TinderCard from 'react-tinder-card'
 
-const db = [
-  {
-    id: 'Richard Hendricks',
-    url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.infometrics.co.nz%2Fchart-of-the-month-going-to-the-dogs%2F&psig=AOvVaw0BdxsIQ175eXmzbLf3A31a&ust=1625266261674000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCPDm0uP6wvECFQAAAAAdAAAAABAD'
-  }
-]
+import db from '../../server/data/data'
+
+const alreadyRemoved = []
+let memeState = db
 
 const App = () => {
-  const memes = db
+  // const memes = db
   const [direction, setDirection] = useState()
+  const [choice, setChoice] = useState()
+  const [memes, setMemes] = useState(db)
+
+
+  const childRefs = useMemo(() => Array(db.length).fill(0).map(i => React.createRef()), [])
+
+  console.log(childRefs)
+
 
   const swiped = (direction, meme) => {
     setDirection(direction)
+    alreadyRemoved.push(meme)
+    switch (direction) {
+      case 'right':
+        setChoice('based')
+        break
+      case 'left':
+        setChoice('cringe')
+        break
+      case 'up':
+        setChoice('SUPER BASED')
+        break
+      case 'down':
+        setChoice('illegal')
+    }
+  }
+
+  const outOfFrame = (id) => {
+    console.log(id + ' left the screen!')
+    memeState = memeState.filter(meme => meme.id !== id)
+    setMemes(memeState)
+  }
+
+  const swipe = (direction) => {
+    const memesLeft = memes.filter(meme => !alreadyRemoved.includes(meme.id))
+    if (memesLeft.length) {
+      const toBeRemoved = memesLeft[memesLeft.length - 1].id // Find the card object to be removed
+      const index = db.map(meme => meme.id).indexOf(toBeRemoved) // Find the index of which to make the reference to
+      alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
+      childRefs[index].current.swipe(direction) // Swipe the card!
+    }
   }
 
   return (
@@ -22,13 +58,19 @@ const App = () => {
         <h1>Good or Bad?</h1>
         <p>Do you like memes? Well, swipe through this and decide if its good or bad.</p>
         <div className='cardContainer'>
-          {memes.map((meme) =>
-            <TinderCard className='swipe' key={meme.id} onSwipe={(direction) => swiped(direction, meme.id)} >
-              <div style={{ backgroundImage: 'url(' + meme.url + ')' }} className='card'>This is a test</div>
+          {db.map((meme, index) =>
+            <TinderCard ref={childRefs[index]} className='swipe' key={meme.id} onSwipe={(direction) => swiped(direction, meme.id)} onCardLeftScreen={() => outOfFrame(meme.id)} >
+              <div style={{ backgroundImage: 'url(' + meme.url + ')' }} className='card'></div>
             </TinderCard>
           )}
         </div>
-        {direction ? <h2 className='infotext'>This meme is {direction}</h2> : <h2>Start swiping!</h2> }
+        {direction ? <h2 className='infotext'>This meme is {choice}</h2> : <h2>Start swiping!</h2> }
+      </div>
+      <div>
+        <button onClick={() => swipe('left')}>Swipe left!</button>
+        <button onClick={() => swipe('up')}>Swipe up!</button>
+        <button onClick={() => swipe('down')}>Swipe down!</button>
+        <button onClick={() => swipe('right')}>Swipe right!</button>
       </div>
 
     </>
