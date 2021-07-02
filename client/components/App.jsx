@@ -1,5 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import TinderCard from 'react-tinder-card'
+import { FaRegAngry } from 'react-icons/fa'
+
+import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'
+import { BiHappyHeartEyes } from 'react-icons/bi'
 
 import db from '../../server/data/data'
 
@@ -12,11 +16,9 @@ const App = () => {
   const [choice, setChoice] = useState()
   const [memes, setMemes] = useState(db)
 
-
   const childRefs = useMemo(() => Array(db.length).fill(0).map(i => React.createRef()), [])
 
   console.log(childRefs)
-
 
   const swiped = (direction, meme) => {
     setDirection(direction)
@@ -67,10 +69,10 @@ const App = () => {
         {direction ? <h2 className='infotext'>This meme is {choice}</h2> : <h2>Start swiping!</h2> }
       </div>
       <div>
-        <button onClick={() => swipe('left')}>Swipe left!</button>
-        <button onClick={() => swipe('up')}>Swipe up!</button>
-        <button onClick={() => swipe('down')}>Swipe down!</button>
-        <button onClick={() => swipe('right')}>Swipe right!</button>
+        <button onClick={() => swipe('left')}><AiOutlineDislike /></button>
+        <button onClick={() => swipe('down')}><FaRegAngry /></button>
+        <button onClick={() => swipe('up')}><BiHappyHeartEyes /></button>
+        <button onClick={() => swipe('right')}><AiOutlineLike /></button>
       </div>
 
     </>

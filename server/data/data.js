@@ -320,3 +320,5 @@ const db = [
    url: '/images/meme80.jpg',
  },
 ]
+
+export default db
