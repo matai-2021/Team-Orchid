@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
 import TinderCard from 'react-tinder-card'
-
-const db = [
-  {
-    id: 'Richard Hendricks',
-    url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.infometrics.co.nz%2Fchart-of-the-month-going-to-the-dogs%2F&psig=AOvVaw0BdxsIQ175eXmzbLf3A31a&ust=1625266261674000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCPDm0uP6wvECFQAAAAAdAAAAABAD'
-  }
-]
+import db from '../../server/data/data'
 
 const App = () => {
   const memes = db
@@ -18,13 +12,15 @@ const App = () => {
 
   return (
     <>
-      <div>
-        <h1>Good or Bad?</h1>
-        <p>Do you like memes? Well, swipe through this and decide if its good or bad.</p>
+      <div className='biggestBox'>
+        <div className='titleContainer'>
+          <h1>Good or Bad?</h1>
+          <p>Do you like memes? Well, swipe through this and decide if its good or bad.</p>
+        </div>
         <div className='cardContainer'>
           {memes.map((meme) =>
             <TinderCard className='swipe' key={meme.id} onSwipe={(direction) => swiped(direction, meme.id)} >
-              <div style={{ backgroundImage: 'url(' + meme.url + ')' }} className='card'>This is a test</div>
+              <div style={{ backgroundImage: 'url(' + meme.url + ')' }} className='card'>TEST CARD</div>
             </TinderCard>
           )}
         </div>
